@@ -1,0 +1,49 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Sistema Certificación</title>
+<link th:rel="stylesheet" th:href="@{/css/stylesheet.css}">
+</head>
+<body>
+	<div class="container">
+		
+		<h2 class="form-signin-heading">Welcome to AIEP, please login</h2>
+		
+		<div th:if="${param.error}" class="alert alert-danger">    
+        	Invalid username and password.
+        </div>
+        <div th:if="${param.logout}" class="alert alert-success"> 
+            You have been logged out.
+        </div>
+        
+        <div class="form">
+	        <div class="login">
+	          <div class="login-header">
+	            <div class="title"><h3>Login</h3>
+	            <p>por favor iniciar sesión</p>
+	            </div>
+	          </div>
+	        </div>
+			<form class="login-form" method="POST" th:action="@{/login}">
+				
+				<div class="row">
+					
+					<input type="text" id="username" name="username" class="form-control"
+						placeholder="Username" required autofocus>
+				</div>
+				<div class="row">
+					
+					<input type="password" id="password" name="password" class="form-control"
+						placeholder="Password" required>
+				</div>
+				<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+			</form>
+        
+			<a th:href="@{/registrate/}">Registrate</a>
+        </div>
+	</div>
+</body>
+</html>
