@@ -29,7 +29,7 @@ public class Curso implements Serializable {
 	private Date fectermino;
 	@Column (nullable = false)
 	private Integer cupos;
-	@Column (nullable = false)
+	@Column (nullable = false, length = 500)
 	private String descripcion;
 	
 	@OneToMany(mappedBy = "curso")

@@ -1,11 +1,20 @@
 package cl.aiep.certif.controller;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import cl.aiep.certif.controller.service.CursoService;
 import cl.aiep.certif.controller.service.EstudianteService;
 import cl.aiep.certif.dao.dto.EstudianteDTO;
+import cl.aiep.certif.dao.entity.Authorities;
 import cl.aiep.certif.util.CommonUtil;
 
 @Controller
@@ -32,6 +42,40 @@ public class LoginController {
 	@GetMapping("/login" )
     public String viewLoginPage() {
         return "login";
+    }
+	
+	@GetMapping("/home")
+	@PreAuthorize("isAuthenticated()")
+    public String homeCursos() {
+		
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User usuario = (User) auth.getPrincipal();
+		
+		Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) securityContext.getAuthentication().getAuthorities();
+		
+		for (GrantedAuthority authority : authorities) {
+		     if( authority.getAuthority().equals("ADMIN")) {
+		    	 return "indexAdmin";
+		     }
+		     
+		}
+		
+        return "index";
+    }
+	
+	@GetMapping("/admin")
+	@PreAuthorize("isAuthenticated()")
+    public String adminCursos(final Model model) {
+		model.addAttribute("cursos", serviceCurso.obtenerCursos());
+        return "indexAdmin";
+    }
+	
+	@GetMapping("/")
+    public String indexCursos(final Model model) {
+		model.addAttribute("cursos", serviceCurso.obtenerCursos());
+        return "indexLibre";
     }
 	
 	@GetMapping("/registrate")
@@ -63,23 +107,9 @@ public class LoginController {
 				
 			}
 			
-	        return "redirect:/";
+	        return "redirect:/home";
 		
 		
-    }
-	
-	@GetMapping("/")
-	@PreAuthorize("isAuthenticated()")
-    public String homeCursos() {
-		
-        return "index";
-    }
-	
-	@GetMapping("/admin")
-	@PreAuthorize("isAuthenticated()")
-    public String adminCursos(final Model model) {
-		model.addAttribute("cursos", serviceCurso.obtenerCursos());
-        return "indexAdmin";
     }
 	
 	@GetMapping("{tab}")
@@ -96,9 +126,6 @@ public class LoginController {
     			model.addAttribute("curso", serviceEst.obtenerCurso( auth.getName()));
         		retorno =  "_" + tab;
         	}
-        	
-            
-        
 
         return retorno;
     }

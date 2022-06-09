@@ -98,9 +98,19 @@ public class CursosController {
 	        return "nuevoCurso";
 		}
 		
-		if(curso.getId()!=null)
+		if(curso.getFecinicio().compareTo(curso.getFectermino()) > 0) {
+			model.addAttribute("curso", curso);
+			model.addAttribute("mensaje", "Fecha de inicio Mayor a la de Termino");
+			
+			return "nuevoCurso";
+		}
+		
+		if(curso.getId()!=null) {
 			service.actualizarCurso(curso);
-		else service.guardarCurso(curso);
+		}
+		else { 
+			service.guardarCurso(curso);
+		}
 
         return "redirect:/admin";
 	}

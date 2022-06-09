@@ -1,0 +1,73 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Sistema Certificación</title>
+<link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+    <div class="container">
+        <a class="navbar-brand" href="/">Aplicacion Cursos Online</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/registrate">Registrate</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Autenticate</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+	
+	<div class="card m-1 border-0">
+	  	<div class="card-body">
+	    	<h3> Bienvenido </h3>
+	  	</div>
+	</div>
+			
+	<div class="row">
+		<th:block data-th-each="cur : ${cursos}" th:if="${cur.cupos > 0}" >
+		
+		<div class="card mb-3 p-2 m-1" style="max-width: 540px;">
+		  <div class="row g-0">
+		    <div class="col-md-4">
+		    	<img th:src="@{${cur.imagen}}" class="img-fluid rounded-start" alt="img-curso" >
+		    </div>
+		    <div class="col-md-8">
+		      <div class="card-body">
+			    <h5 class="card-title">[[${cur.nombre}]]</h5>
+			    <p class="card-text">[[${cur.descripcion}]]</p>
+			    <p class="card-text"><small class="text-muted">[[${cur.fecinicio}]]</small></p>
+			    <p class="card-text"><small class="text-muted">[[${cur.fectermino}]]</small></p>
+			    <a th:href="@{/obtiene/{id}(id=${cur.id})}" class="btn btn-success"> Ver Curso</a>
+			  </div>
+		    </div>
+		  </div>
+		</div>
+		
+		</th:block>
+		
+    
+    </div>
+</div>
+</body>
+</html>
